@@ -1,13 +1,78 @@
-body {
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+
+/*
+=============== 
+Variables
+===============
+*/
+
+:root {
+  --font-family: "Nunito", sans-serif;
+  --color-yellow: #f4e041;
+  --color-blue: #00bdd3;
+  --color-gray: #545454;
+  --color-light-gray”: #f8f8f8;
+}
+/*
+=============== 
+Global Styles
+===============
+*/
+
+*,
+::after,
+::before {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  background: #e5e5e5;
+  font-family: var(--font-family);
+}
+
+ul {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 40px;
+  line-height: 40px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 26px;
+}
+
+/* .App {
+  background: #e5e5e5;
+} */
+
+@media (min-width: 360px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    padding: 0 32px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .container {
+    padding: 0 60px;
+  }
+}
+
+@media screen and (min-width: 2560px) {
+  .container {
+    padding: 0 60px;
+  }
 }
