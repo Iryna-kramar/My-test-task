@@ -6,7 +6,7 @@ import UserCard from "./UserCard";
 
 
 const Users = () => {
-  const [data, setData] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsersData = async () => {
@@ -14,19 +14,19 @@ const Users = () => {
         "https://frontend-test-assignment-api.abz.agency/api/v1/users",
         dataOptions
       );
-      setData(allData.users);
+      setUsers(allData.users);
     };
     fetchUsersData();
   }, []);
 
-  console.log(data, "data2");
+  console.log(users, "data2");
 
   return (
     <div className="container">
       <Wrapper>
         <h1>Working with GET request</h1>
         <div className="userCards">
-          {data.map((user, index) => (
+          {users.map((user, index) => (
             <UserCard key={index} user={user} />
           ))}
         </div>

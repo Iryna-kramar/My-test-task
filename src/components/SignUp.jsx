@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { navLinks } from "../constants";
-import TextField from "@mui/material/TextField";
-import Button from "./Button";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
-import UploadButton from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
+import { dataOptions, fetchData } from "../fetchData/fetchData";
+// import Button from "./Button";
+import {
+  Button,
+  TextField,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  UploadButton,
+  Stack,
+} from "./index";
 
 const SignUp = () => {
   // States for registration
@@ -17,24 +21,22 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [position, setPosition] = useState("");
+  const [photo, setPhoto] = useState("");
 
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
 
-  // Handling the name change
+  // Handling values change
   const handleName = (e) => {
     setName(e.target.value);
     setSubmitted(false);
   };
-
-  // Handling the email change
   const handleEmail = (e) => {
     setEmail(e.target.value);
     setSubmitted(false);
   };
 
-  // Handling the password change
   const handlePhone = (e) => {
     setPhone(e.target.value);
     setSubmitted(false);
@@ -45,18 +47,63 @@ const SignUp = () => {
     setSubmitted(false);
   };
 
+  const handlePhoto = (e) => {
+    setPhoto(e.target.files[0]);
+    setSubmitted(false);
+  };
+
   // Handling the form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = { name, email, phone, position };
-    if (name === "" || email === "" || phone === "" || position === "") {
+    const user = { name, email, phone, position, photo };
+
+
+      const fetchToken = async () => {
+        const token = await fetchData(
+          "https://frontend-test-assignment-api.abz.agency/api/v1/token ",
+          dataOptions
+        );
+        console.log(token, 'token')
+      };
+      console.log(fetchUsersData(), 'fetch')
+
+      
+    // const token = fetch(
+    //   "https://frontend-test-assignment-api.abz.agency/api/v1/token"
+    // )
+    //   .then(function (response) {
+    //     return response.json();
+    //   })
+    //   .then(function (data) {
+    //     console.log(data);
+    //   });
+
+
+    if (
+      name === "" ||
+      email === "" ||
+      phone === "" ||
+      position === "" ||
+      photo === ""
+    ) {
       setError(true);
       console.log(user);
     } else {
       setSubmitted(true);
       setError(false);
-
       console.log(user);
+
+      fetch(`https://frontend-test-assignment-api.abz.agency/api/v1/users/`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization:
+            "Bearer eyJpdiI6Im9mV1NTMlFZQTlJeWlLQ3liVks1MGc9PSIsInZhbHVlIjoiRTJBbUR4dHp1dWJ3ekQ4bG85WVZya3ZpRGlMQ0g5ZHk4M05UNUY4Rmd3eFM3czc2UDRBR0E4SDR5WXlVTG5DUDdSRTJTMU1KQ2lUQmVZYXZZOHJJUVE9PSIsIm1hYyI6ImE5YmNiODljZjMzMTdmMDc4NjEwN2RjZTVkNzBmMWI0ZDQyN2YzODI5YjQxMzE4MWY0MmY0ZTQ1OGY4NTkyNWQifQ==",
+        },
+        body: user,
+      }).then(() => {
+        console.log("new user added");
+      });
     }
   };
 
@@ -150,13 +197,19 @@ const SignUp = () => {
                 component="label"
               >
                 Upload
-                <input hidden accept="image/*" multiple type="file" />
+                <input
+                  hidden
+                  accept="image/*"
+                  multiple
+                  type="file"
+                  onChange={handlePhoto}
+                />
               </UploadButton>
               <span>Upload your photo</span>
             </Stack>
           </div>
           <div className="submitBtn">
-            <Button disabled type="submit">{navLinks[1].title}</Button>
+            <Button type="submit">{navLinks[1].title}</Button>
           </div>
         </form>
       </Wrapper>
