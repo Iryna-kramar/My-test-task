@@ -11,8 +11,8 @@ const Users = () => {
   useEffect(() => {
     const fetchUsersData = async () => {
       const allData = await fetchData(
-        "https://frontend-test-assignment-api.abz.agency/api/v1/users",
-        dataOptions
+        "https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6 ",
+        {method: "GET"}
       );
       setUsers(allData.users);
     };

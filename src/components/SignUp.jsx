@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { navLinks } from "../constants";
-import { dataOptions, fetchData } from "../fetchData/fetchData";
+import { fetchData, dataPostOptions, getToken } from "../fetchData/fetchData";
 // import Button from "./Button";
 import {
   Button,
@@ -20,8 +20,9 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [position, setPosition] = useState("");
+  const [position_id, setPosition_id] = useState("");
   const [photo, setPhoto] = useState("");
+  const [token, setToken] = useState("");
 
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
@@ -32,6 +33,7 @@ const SignUp = () => {
     setName(e.target.value);
     setSubmitted(false);
   };
+
   const handleEmail = (e) => {
     setEmail(e.target.value);
     setSubmitted(false);
@@ -43,7 +45,7 @@ const SignUp = () => {
   };
 
   const handlePosition = (e) => {
-    setPosition(e.target.value);
+    setPosition_id(e.target.value);
     setSubmitted(false);
   };
 
@@ -55,55 +57,66 @@ const SignUp = () => {
   // Handling the form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = { name, email, phone, position, photo };
+    const user = { name, email, phone, position_id, photo };
 
+    const fetchTokensData = async () => {
+      const tokenData = await fetchData(
+        "https://frontend-test-assignment-api.abz.agency/api/v1/token ",
+        { method: "GET" }
+      );
+      setToken(tokenData.token);
+    };
+    fetchTokensData();
 
-      const fetchToken = async () => {
-        const token = await fetchData(
-          "https://frontend-test-assignment-api.abz.agency/api/v1/token ",
-          dataOptions
-        );
-        console.log(token, 'token')
-      };
-      console.log(fetchUsersData(), 'fetch')
+    console.log(token, "1token");
 
-      
-    // const token = fetch(
-    //   "https://frontend-test-assignment-api.abz.agency/api/v1/token"
-    // )
-    //   .then(function (response) {
-    //     return response.json();
-    //   })
-    //   .then(function (data) {
-    //     console.log(data);
-    //   });
-
+    const fetchPositionIdData = async () => {
+      const positionIdData = await fetchData(
+        "https://frontend-test-assignment-api.abz.agency/api/v1/positions",
+        { method: "GET" }
+      )
+        .then((response) => {
+          response.json();
+        })
+        .then((data) => {
+          console.log(data);
+        });
+    };
 
     if (
       name === "" ||
       email === "" ||
       phone === "" ||
-      position === "" ||
+      position_id === "" ||
       photo === ""
     ) {
       setError(true);
-      console.log(user);
     } else {
       setSubmitted(true);
       setError(false);
-      console.log(user);
+      console.log(user, "new user");
 
-      fetch(`https://frontend-test-assignment-api.abz.agency/api/v1/users/`, {
+      fetch("https://frontend-test-assignment-api.abz.agency/api/v1/users", {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
-          Authorization:
-            "Bearer eyJpdiI6Im9mV1NTMlFZQTlJeWlLQ3liVks1MGc9PSIsInZhbHVlIjoiRTJBbUR4dHp1dWJ3ekQ4bG85WVZya3ZpRGlMQ0g5ZHk4M05UNUY4Rmd3eFM3czc2UDRBR0E4SDR5WXlVTG5DUDdSRTJTMU1KQ2lUQmVZYXZZOHJJUVE9PSIsIm1hYyI6ImE5YmNiODljZjMzMTdmMDc4NjEwN2RjZTVkNzBmMWI0ZDQyN2YzODI5YjQxMzE4MWY0MmY0ZTQ1OGY4NTkyNWQifQ==",
+          Token: token,
         },
         body: user,
-      }).then(() => {
-        console.log("new user added");
-      });
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            console.log("new user added");
+            // process success response
+          } else {
+            console.log("error");
+            // proccess server errors
+          }
+        })
+        .catch((error) => {
+          // proccess network errors
+        });
     }
   };
 
@@ -146,28 +159,28 @@ const SignUp = () => {
               onChange={handlePosition}
             >
               <FormControlLabel
-                value="Frontend developer"
+                value="1"
                 control={<Radio />}
                 label="Frontend developer"
-                checked={position === "Frontend developer"}
+                checked={position_id === "1"}
               />
               <FormControlLabel
-                value="Backend developer"
+                value="2"
                 control={<Radio />}
                 label="Backend developer"
-                checked={position === "Backend developer"}
+                checked={position_id === "2"}
               />
               <FormControlLabel
-                value="Designer"
+                value="3"
                 control={<Radio />}
                 label="Designer"
-                checked={position === "Designer"}
+                checked={position_id === "3"}
               />
               <FormControlLabel
-                value="QA"
+                value="4"
                 control={<Radio />}
                 label="QA"
-                checked={position === "QA"}
+                checked={position_id === "4"}
               />
             </RadioGroup>
           </FormControl>
