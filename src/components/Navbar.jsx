@@ -2,8 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Logo from "../assets/Logo.svg";
 import { navLinks } from "../constants";
+import {Link} from 'react-scroll'
 
 const Navbar = () => {
+
   return (
     <Wrapper className="container ">
       <div className="app__navbar">
@@ -11,9 +13,9 @@ const Navbar = () => {
           <img src={Logo} alt="app logo" />
         </div>
         <ul className="app__navbar-links">
-          {navLinks.map((nav, index) => (
+          {navLinks.map((nav) => (
             <li key={nav.id}>
-              <a href={`#${nav.id}`}>{nav.title}</a>
+              <Link to={`${nav.id}`} spy={true} smooth={true}>{nav.title}</Link>
             </li>
           ))}
         </ul>
@@ -21,6 +23,8 @@ const Navbar = () => {
     </Wrapper>
   );
 };
+
+
 
 const Wrapper = styled.nav`
   .app__navbar {

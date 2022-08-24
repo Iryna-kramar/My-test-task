@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { navLinks } from "../constants";
-import { fetchData, dataPostOptions, getToken } from "../fetchData/fetchData";
-// import Button from "./Button";
+import { navLinks, inputField } from "../constants";
+import { fetchData } from "../fetchData/fetchData";
 import {
   Button,
   TextField,
@@ -20,6 +19,7 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [positions, setPositions] = useState([]);
   const [position_id, setPosition_id] = useState("");
   const [photo, setPhoto] = useState("");
   const [token, setToken] = useState("");
@@ -27,6 +27,31 @@ const SignUp = () => {
   // States for checking the errors
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchPositionData = async () => {
+      const positionData = await fetchData(
+        "https://frontend-test-assignment-api.abz.agency/api/v1/positions",
+        { method: "GET" }
+      );
+      setPositions(positionData.positions);
+    };
+    fetchPositionData();
+  }, []);
+  console.log(positions, "position");
+
+  useEffect(() => {
+    const fetchTokensData = async () => {
+      const tokenData = await fetchData(
+        "https://frontend-test-assignment-api.abz.agency/api/v1/token ",
+        { method: "GET" }
+      );
+      setToken(tokenData.token);
+    };
+    fetchTokensData();
+  }, []);
+
+  console.log(token, "token");
 
   // Handling values change
   const handleName = (e) => {
@@ -59,30 +84,6 @@ const SignUp = () => {
     e.preventDefault();
     const user = { name, email, phone, position_id, photo };
 
-    const fetchTokensData = async () => {
-      const tokenData = await fetchData(
-        "https://frontend-test-assignment-api.abz.agency/api/v1/token ",
-        { method: "GET" }
-      );
-      setToken(tokenData.token);
-    };
-    fetchTokensData();
-
-    console.log(token, "1token");
-
-    const fetchPositionIdData = async () => {
-      const positionIdData = await fetchData(
-        "https://frontend-test-assignment-api.abz.agency/api/v1/positions",
-        { method: "GET" }
-      )
-        .then((response) => {
-          response.json();
-        })
-        .then((data) => {
-          console.log(data);
-        });
-    };
-
     if (
       name === "" ||
       email === "" ||
@@ -96,17 +97,30 @@ const SignUp = () => {
       setError(false);
       console.log(user, "new user");
 
+      const formData = new FormData();
+      for (const name in user) {
+        formData.append(name, user[name]);
+      }
       fetch("https://frontend-test-assignment-api.abz.agency/api/v1/users", {
         method: "POST",
         headers: {
           Token: token,
         },
-        body: user,
+        body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
           if (data.success) {
+            const fetchTokensData = async () => {
+              const tokenData = await fetchData(
+                "https://frontend-test-assignment-api.abz.agency/api/v1/token ",
+                { method: "GET" }
+              );
+              setToken(tokenData.token);
+            };
+            fetchTokensData();
+
             console.log("new user added");
             // process success response
           } else {
@@ -122,30 +136,30 @@ const SignUp = () => {
 
   return (
     <div className="container">
-      <Wrapper>
+      <Wrapper id="signUp">
         <h1>Working with POST request</h1>
         <form className="signUpForm" onSubmit={handleSubmit}>
           <div className="inputInfo">
             <TextField
               onChange={handleName}
-              label="Your name"
+              label={inputField[0].lable}
               value={name}
-              type="text"
+              type={inputField[0].type}
             />
 
             <TextField
               onChange={handleEmail}
-              label="Email"
+              label={inputField[1].lable}
               value={email}
-              type="email"
+              type={inputField[1].type}
             />
 
             <TextField
               onChange={handlePhone}
               helperText="+38 (XXX) XXX - XX - XX"
-              label="Phone"
+              label={inputField[2].lable}
               value={phone}
-              type="phone"
+              type={inputField[2].type}
             />
           </div>
 
@@ -153,35 +167,20 @@ const SignUp = () => {
             <FormLabel id="demo-radio-buttons-group-label">
               Select your position
             </FormLabel>
+
             <RadioGroup
               aria-labelledby="demo-radio-buttons-group-label"
               name="radio-buttons-group"
               onChange={handlePosition}
             >
-              <FormControlLabel
-                value="1"
-                control={<Radio />}
-                label="Frontend developer"
-                checked={position_id === "1"}
-              />
-              <FormControlLabel
-                value="2"
-                control={<Radio />}
-                label="Backend developer"
-                checked={position_id === "2"}
-              />
-              <FormControlLabel
-                value="3"
-                control={<Radio />}
-                label="Designer"
-                checked={position_id === "3"}
-              />
-              <FormControlLabel
-                value="4"
-                control={<Radio />}
-                label="QA"
-                checked={position_id === "4"}
-              />
+              {positions.map((position) => (
+                <FormControlLabel
+                  key={position.id}
+                  value={position.id}
+                  control={<Radio />}
+                  label={position.name}
+                />
+              ))}
             </RadioGroup>
           </FormControl>
 
@@ -226,41 +225,6 @@ const SignUp = () => {
           </div>
         </form>
       </Wrapper>
-
-      {/* 
-
-        // Showing success message
-  //   const successMessage = () => {
-  //     return (
-  //       <div
-  //         className="success"
-  //         style={{
-  //           display: submitted ? "" : "none",
-  //         }}
-  //       >
-  //         <h1>User {name} successfully registered!!</h1>
-  //       </div>
-  //     );
-  //   };
-
-  //   // Showing error message if error is true
-  //   const errorMessage = () => {
-  //     return (
-  //       <div
-  //         className="error"
-  //         style={{
-  //           display: error ? "" : "none",
-  //         }}
-  //       >
-  //         <h1>Please enter all the fields</h1>
-  //       </div>
-  //     );
-  //   };
-        Calling to the methods
-        <div className="messages">
-          {errorMessage()}
-          {successMessage()}
-        </div> */}
     </div>
   );
 };

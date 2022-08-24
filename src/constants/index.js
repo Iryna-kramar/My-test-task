@@ -9,6 +9,21 @@ export const navLinks = [
   },
 ];
 
+export const inputField = [
+  {
+    lable: "Your name",
+    type: "text",
+  },
+  {
+    lable: "Email",
+    type: "email",
+  },
+  {
+    lable: "Phone",
+    type: "phone",
+  },
+];
+
 export const headerTitles = [
   {
     title: "Test assignment for front-end developer",

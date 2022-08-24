@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { dataOptions, fetchData } from "../fetchData/fetchData";
+import { fetchData } from "../fetchData/fetchData";
 import Button from "./Button";
 import UserCard from "./UserCard";
 
@@ -23,7 +23,7 @@ const Users = () => {
 
   return (
     <div className="container">
-      <Wrapper>
+      <Wrapper id='users'>
         <h1>Working with GET request</h1>
         <div className="userCards">
           {users.map((user, index) => (
