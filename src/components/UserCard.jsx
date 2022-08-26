@@ -26,12 +26,31 @@ const Wrapper = styled.div`
   padding: 20px;
   height: 254px;
 
-img {
-  display: block;
-  width: 75px;
-  height: 75px;
-  border-radius: 50%;
-}
+  img {
+    display: block;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+  }
+
+  p {
+      width: 282px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      width: 282px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 `;
 
 export default UserCard;

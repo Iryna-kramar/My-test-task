@@ -14,6 +14,9 @@ import {
   Stack,
 } from "./index";
 
+
+
+
 const SignUp = () => {
   // States for registration
   const [name, setName] = useState("");
@@ -60,12 +63,12 @@ const SignUp = () => {
   };
 
   const handleEmail = (e) => {
-    setEmail(e.target.value);
+    setEmail(e.target.value.toLowerCase());
     setSubmitted(false);
   };
 
   const handlePhone = (e) => {
-    setPhone(e.target.value);
+    setPhone(e.target.value.replace(/\s/g,'','-'));
     setSubmitted(false);
   };
 
@@ -156,7 +159,7 @@ const SignUp = () => {
 
             <TextField
               onChange={handlePhone}
-              helperText="+38 (XXX) XXX - XX - XX"
+              helperText="+38 XXX XXX XX XX"
               label={inputField[2].lable}
               value={phone}
               type={inputField[2].type}
@@ -164,7 +167,7 @@ const SignUp = () => {
           </div>
 
           <FormControl className="position">
-            <FormLabel id="demo-radio-buttons-group-label">
+            <FormLabel sx={{color: '#7e7e7e'}} id="demo-radio-buttons-group-label">
               Select your position
             </FormLabel>
 
@@ -177,7 +180,11 @@ const SignUp = () => {
                 <FormControlLabel
                   key={position.id}
                   value={position.id}
-                  control={<Radio />}
+                  control={<Radio sx={{
+                    '&.Mui-checked': {
+                      color: 'var(--color-blue)',
+                    },
+                  }}/>}
                   label={position.name}
                 />
               ))}
@@ -221,7 +228,18 @@ const SignUp = () => {
             </Stack>
           </div>
           <div className="submitBtn">
-            <Button type="submit">{navLinks[1].title}</Button>
+            <Button
+              type="submit"
+              disabled={
+                name === "" ||
+                email === "" ||
+                phone === "" ||
+                position_id === "" ||
+                photo === ""
+              }
+            >
+              {navLinks[1].title}
+            </Button>
           </div>
         </form>
       </Wrapper>
@@ -235,7 +253,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-
   form {
     padding-top: 50px;
   }
@@ -252,19 +269,15 @@ const Wrapper = styled.div`
       }
     }
   }
-
   .position {
     padding-top: 25px;
   }
-
   .uploadPhoto {
     margin: 47px 0 50px 0;
     border: 1px solid #d0cfcf;
     border-radius: 4px;
   }
-  span {
-    color: #7e7e7e;
-  }
+ 
   .submitBtn {
     display: flex;
     justify-content: center;

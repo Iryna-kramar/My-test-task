@@ -4,33 +4,58 @@ import { fetchData } from "../fetchData/fetchData";
 import Button from "./Button";
 import UserCard from "./UserCard";
 
-
 const Users = () => {
+
   const [users, setUsers] = useState([]);
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoding, setIsLoding] = useState(true);
+
+  const count = 6;
+  const totalUsers = data.total_users;
+  const totalPages = Math.ceil(totalUsers / count);
+
+  console.log(totalUsers, "totalUsers");
+  console.log(totalPages, "totalPages");
+
+  let baseUrl = `https://frontend-test-assignment-api.abz.agency/api/v1/users?page=${currentPage}&count=${count}`;
+  console.log(baseUrl);
+
+  const onNext = () => {
+    setCurrentPage(currentPage + 1);
+    if (currentPage === totalPages) {
+      return (baseUrl = null);
+    }
+  };
 
   useEffect(() => {
     const fetchUsersData = async () => {
-      const allData = await fetchData(
-        "https://frontend-test-assignment-api.abz.agency/api/v1/users?page=1&count=6 ",
-        {method: "GET"}
-      );
+      const allData = await fetchData(`${baseUrl}`, {
+        method: "GET",
+      });
+      setData(allData);
+      setIsLoding(false);
       setUsers(allData.users);
     };
     fetchUsersData();
-  }, []);
+  }, [currentPage]);
 
   console.log(users, "data2");
 
   return (
     <div className="container">
-      <Wrapper id='users'>
+      <Wrapper id="users">
         <h1>Working with GET request</h1>
         <div className="userCards">
-          {users.map((user, index) => (
-            <UserCard key={index} user={user} />
-          ))}
+          {users
+            .sort((a, b) => b.id - a.id)
+            .map((user, index) => (
+              < UserCard key={index} user={user} />
+            ))}
         </div>
-        <Button>Show more</Button>
+        <Button onClick={onNext} disabled={currentPage === totalPages}>
+          Show more
+        </Button>
       </Wrapper>
     </div>
   );
