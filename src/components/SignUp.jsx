@@ -14,9 +14,6 @@ import {
   Stack,
 } from "./index";
 
-
-
-
 const SignUp = () => {
   // States for registration
   const [name, setName] = useState("");
@@ -31,6 +28,7 @@ const SignUp = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
 
+  // Getting position
   useEffect(() => {
     const fetchPositionData = async () => {
       const positionData = await fetchData(
@@ -41,8 +39,8 @@ const SignUp = () => {
     };
     fetchPositionData();
   }, []);
-  console.log(positions, "position");
 
+  // Getting token
   useEffect(() => {
     const fetchTokensData = async () => {
       const tokenData = await fetchData(
@@ -53,8 +51,6 @@ const SignUp = () => {
     };
     fetchTokensData();
   }, []);
-
-  console.log(token, "token");
 
   // Handling values change
   const handleName = (e) => {
@@ -68,7 +64,7 @@ const SignUp = () => {
   };
 
   const handlePhone = (e) => {
-    setPhone(e.target.value.replace(/\s/g,'','-'));
+    setPhone(e.target.value.replace(/\s/g, "", "-"));
     setSubmitted(false);
   };
 
@@ -113,7 +109,6 @@ const SignUp = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data);
           if (data.success) {
             const fetchTokensData = async () => {
               const tokenData = await fetchData(
@@ -167,7 +162,10 @@ const SignUp = () => {
           </div>
 
           <FormControl className="position">
-            <FormLabel sx={{color: '#7e7e7e'}} id="demo-radio-buttons-group-label">
+            <FormLabel
+              sx={{ color: "#7e7e7e" }}
+              id="demo-radio-buttons-group-label"
+            >
               Select your position
             </FormLabel>
 
@@ -180,11 +178,15 @@ const SignUp = () => {
                 <FormControlLabel
                   key={position.id}
                   value={position.id}
-                  control={<Radio sx={{
-                    '&.Mui-checked': {
-                      color: 'var(--color-blue)',
-                    },
-                  }}/>}
+                  control={
+                    <Radio
+                      sx={{
+                        "&.Mui-checked": {
+                          color: "var(--color-blue)",
+                        },
+                      }}
+                    />
+                  }
                   label={position.name}
                 />
               ))}
@@ -227,7 +229,7 @@ const SignUp = () => {
               <span>Upload your photo</span>
             </Stack>
           </div>
-          <div className="submitBtn">
+          <div className="centerButton">
             <Button
               type="submit"
               disabled={
@@ -269,18 +271,15 @@ const Wrapper = styled.div`
       }
     }
   }
+
   .position {
     padding-top: 25px;
   }
+
   .uploadPhoto {
     margin: 47px 0 50px 0;
     border: 1px solid #d0cfcf;
     border-radius: 4px;
-  }
- 
-  .submitBtn {
-    display: flex;
-    justify-content: center;
   }
 `;
 export default SignUp;

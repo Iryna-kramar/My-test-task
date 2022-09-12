@@ -1,13 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-
 const Button = ({ children, ...props }) => {
-  return (
-    <Wrapper {...props}>
-      {children}
-    </Wrapper>
-  );
+  return <Wrapper {...props}>{children}</Wrapper>;
 };
 
 const Wrapper = styled.button`
@@ -19,6 +14,7 @@ const Wrapper = styled.button`
   border: none;
   font-size: 16px;
   line-height: 26px;
+  align-items: center;
   :hover {
     background: #ffe302;
   }

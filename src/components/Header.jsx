@@ -4,7 +4,6 @@ import Button from "./Button";
 import headerImg from "../assets/header_image.jpg";
 import { headerTitles, navLinks } from "../constants";
 
-
 const Header = () => {
   return (
     <Wrapper>
@@ -16,8 +15,6 @@ const Header = () => {
     </Wrapper>
   );
 };
-
-
 
 const Wrapper = styled.div`
   display: flex;

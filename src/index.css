@@ -28,7 +28,6 @@ Global Styles
 }
 
 body {
-  background: #e5e5e5;
   font-family: var(--font-family);
 }
 
@@ -42,6 +41,7 @@ a {
 h1 {
   font-size: 40px;
   line-height: 40px;
+  text-align: center;
 }
 
 p {
@@ -49,30 +49,34 @@ p {
   line-height: 26px;
 }
 
-/* .App {
-  background: #e5e5e5;
-} */
+.container {
+  max-width: 1170px;
+  padding: 0;
+  margin: 0 auto;
+}
 
-@media (min-width: 360px) {
+.centerButton {
+  display: flex;
+  justify-content: center;
+}
+.app__background {
+  background: #e5e5e5;
+}
+
+@media screen and (max-width: 1024px) {
   .container {
-    padding: 0 16px;
+    padding: 0 60px;
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 1023px) {
   .container {
     padding: 0 32px;
   }
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (max-width: 767px) {
   .container {
-    padding: 0 60px;
-  }
-}
-
-@media screen and (min-width: 2560px) {
-  .container {
-    padding: 0 60px;
+    padding: 0 16px;
   }
 }

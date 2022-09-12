@@ -2,10 +2,9 @@ import React from "react";
 
 import { Navbar, Header, Users, SignUp } from "./components";
 
-
 function App() {
   return (
-    <div>
+    <div className="app__background">
       <Navbar />
       <Header />
       <Users />
