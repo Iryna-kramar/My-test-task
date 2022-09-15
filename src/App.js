@@ -4,10 +4,10 @@ import { Navbar, Header, Users, SignUp } from "./components";
 
 function App() {
   return (
-    <div className="app__background">
+    <div>
       <Navbar />
       <Header />
-      <Users />
+      <Users />    
       <SignUp />
     </div>
   );

@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { fetchData } from "../fetchData/fetchData";
 import Button from "./Button";
 import UserCard from "./UserCard";
+import Loader from "./Loader";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoding, setIsLoding] = useState(true);
 
   const count = 6;
   const totalUsers = data.total_users;
@@ -29,7 +29,6 @@ const Users = () => {
         method: "GET",
       });
       setData(allData);
-      setIsLoding(false);
       setUsers(allData.users);
     };
     fetchUsersData();
@@ -39,6 +38,7 @@ const Users = () => {
     <div className="container">
       <Wrapper id="users">
         <h1>Working with GET request</h1>
+        {users.length !== "0" ? (
         <div className="userCards">
           {users
             .sort((a, b) => b.id - a.id)
@@ -46,6 +46,9 @@ const Users = () => {
               <UserCard key={index} user={user} />
             ))}
         </div>
+       ) : (
+          <Loader />
+        )}
         <div className="centerButton" >
         <Button onClick={onNext} disabled={currentPage === totalPages}>
           Show more
