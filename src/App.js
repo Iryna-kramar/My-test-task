@@ -7,7 +7,7 @@ function App() {
     <div>
       <Navbar />
       <Header />
-      <Users />    
+      <Users />
       <SignUp />
     </div>
   );

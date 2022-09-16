@@ -39,20 +39,20 @@ const Users = () => {
       <Wrapper id="users">
         <h1>Working with GET request</h1>
         {users.length !== "0" ? (
-        <div className="userCards">
-          {users
-            .sort((a, b) => b.id - a.id)
-            .map((user, index) => (
-              <UserCard key={index} user={user} />
-            ))}
-        </div>
-       ) : (
+          <div className="userCards">
+            {users
+              .sort((a, b) => b.id - a.id)
+              .map((user, index) => (
+                <UserCard key={index} user={user} />
+              ))}
+          </div>
+        ) : (
           <Loader />
         )}
-        <div className="centerButton" >
-        <Button onClick={onNext} disabled={currentPage === totalPages}>
-          Show more
-        </Button>
+        <div className="centerButton">
+          <Button onClick={onNext} disabled={currentPage === totalPages}>
+            Show more
+          </Button>
         </div>
       </Wrapper>
     </div>
@@ -84,7 +84,6 @@ const Wrapper = styled.div`
       grid-gap: 20px;
     }
   }
- 
 `;
 
 export default Users;
