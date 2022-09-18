@@ -50,7 +50,12 @@ const Users = () => {
           <Loader />
         )}
         <div className="centerButton">
-          <Button onClick={onNext} disabled={currentPage === totalPages}>
+          <Button
+            onClick={onNext}
+            style={{
+              display: currentPage === totalPages ? "none" : "",
+            }}
+          >
             Show more
           </Button>
         </div>
@@ -80,6 +85,7 @@ const Wrapper = styled.div`
     }
 
     @media screen and (max-width: 767px) {
+      justify-items: center;
       grid-template-columns: 1fr;
       grid-gap: 20px;
     }

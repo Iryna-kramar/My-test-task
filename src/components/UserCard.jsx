@@ -25,7 +25,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   background: #fff;
-  min-width: 282px;
+  min-width: 328px;
   border-radius: 16px;
   padding: 20px;
   height: 254px;
@@ -53,6 +53,11 @@ const Wrapper = styled.div`
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
+  .ellipsis:hover {
+   overflow:visible;
+   }
+
 `;
 
 export default UserCard;
