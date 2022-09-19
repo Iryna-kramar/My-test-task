@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 
 const UserCard = ({ user }) => {
+  // const { name, email, phone, position } = user;
+
   return (
     <Wrapper>
       <img src={user.photo} alt={user.name}></img>

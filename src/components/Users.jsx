@@ -5,8 +5,7 @@ import Button from "./Button";
 import UserCard from "./UserCard";
 import Loader from "./Loader";
 
-const Users = () => {
-  const [users, setUsers] = useState([]);
+const Users = ({users, setUsers}) => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 

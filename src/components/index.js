@@ -12,6 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import UploadButton from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Alert from "@mui/material/Alert";
 
 export {
   Navbar,
@@ -27,4 +28,5 @@ export {
   FormLabel,
   UploadButton,
   Stack,
+  Alert,
 };

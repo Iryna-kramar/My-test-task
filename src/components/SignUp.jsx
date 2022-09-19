@@ -13,9 +13,10 @@ import {
   FormLabel,
   UploadButton,
   Stack,
+  Alert
 } from "./index";
 
-const SignUp = () => {
+const SignUp = ({ users, setUsers }) => {
   // States for registration
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -77,12 +78,13 @@ const SignUp = () => {
   const handlePhoto = (e) => {
     setPhoto(e.target.files[0]);
     setSubmitted(false);
+    console.log(photo[0], "photo")
   };
 
   // Handling the form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const user = { name, email, phone, position_id, photo };
+    const newUser = { name, email, phone, position_id, photo };
 
     if (
       name === "" ||
@@ -93,13 +95,14 @@ const SignUp = () => {
     ) {
       setError(true);
     } else {
-      setSubmitted(true);
-      setError(false);
-      console.log(user, "new user");
+      // setSubmitted(true);
+      // setError(false);
+      console.log(newUser, "new user");
+      console.log(users, "users");
 
       const formData = new FormData();
-      for (const name in user) {
-        formData.append(name, user[name]);
+      for (const name in newUser) {
+        formData.append(name, newUser[name]);
       }
       fetch("https://frontend-test-assignment-api.abz.agency/api/v1/users", {
         method: "POST",
@@ -110,6 +113,7 @@ const SignUp = () => {
       })
         .then((response) => response.json())
         .then((data) => {
+          console.log(data, "data");
           if (data.success) {
             const fetchTokensData = async () => {
               const tokenData = await fetchData(
@@ -117,13 +121,15 @@ const SignUp = () => {
                 { method: "GET" }
               );
               setToken(tokenData.token);
+              setUsers((users) => [newUser, ...users].slice(0, -1));
             };
+            setSubmitted(true);
             fetchTokensData();
 
             console.log("new user added");
             // process success response
           } else {
-            console.log("error");
+            setError(data.message);
             // proccess server errors
           }
         })
@@ -258,6 +264,13 @@ const SignUp = () => {
                 </Button>
               </div>
             </form>
+            {error ? (
+              <Alert sx={{ mt: "50px" }} severity="info">
+                {error}
+              </Alert>
+            ) : (
+              submitted
+            )}
           </div>
         )}
       </Wrapper>
