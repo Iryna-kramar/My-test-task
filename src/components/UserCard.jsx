@@ -2,15 +2,11 @@ import React from "react";
 import styled from "styled-components";
 
 const UserCard = ({ user }) => {
-  // const { name, email, phone, position } = user;
-
   return (
     <Wrapper>
       <img src={user.photo} alt={user.name}></img>
       <div className="userInfo">
-        <p className={user.name.length >= 32 ? "ellipsis" : ""}>
-          {user.name}
-        </p>
+        <p className={user.name.length >= 32 ? "ellipsis" : ""}>{user.name}</p>
         <p>{user.position}</p>
         <p className={user.email.length >= 32 ? "ellipsis" : ""}>
           {user.email}
@@ -57,9 +53,8 @@ const Wrapper = styled.div`
   }
 
   .ellipsis:hover {
-   overflow:visible;
-   }
-
+    overflow: visible;
+  }
 `;
 
 export default UserCard;

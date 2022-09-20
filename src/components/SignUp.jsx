@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import successImg from "../assets/success-image.svg";
 import { navLinks, inputField } from "../constants";
-import { fetchData } from "../fetchData/fetchData";
+import { UsersContext } from "../context/context";
 import {
   Button,
   TextField,
@@ -16,70 +16,49 @@ import {
   Alert,
 } from "./index";
 
-const SignUp = ({ users, setUsers }) => {
+const SignUp = () => {
+  const { positions, submitted, error } = React.useContext(UsersContext);
+  const { fetchPositionData, fetchTokensData, fetchPostData } =
+    useContext(UsersContext);
+
   // States for registration
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [positions, setPositions] = useState([]);
   const [position_id, setPosition_id] = useState("");
   const [photo, setPhoto] = useState("");
   const [Url, setUrl] = useState("");
-  const [token, setToken] = useState("");
-
-  // States for checking the errors
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState(false);
 
   // Getting position
   useEffect(() => {
-    const fetchPositionData = async () => {
-      const positionData = await fetchData(
-        "https://frontend-test-assignment-api.abz.agency/api/v1/positions",
-        { method: "GET" }
-      );
-      setPositions(positionData.positions);
-    };
     fetchPositionData();
   }, []);
 
   // Getting token
   useEffect(() => {
-    const fetchTokensData = async () => {
-      const tokenData = await fetchData(
-        "https://frontend-test-assignment-api.abz.agency/api/v1/token ",
-        { method: "GET" }
-      );
-      setToken(tokenData.token);
-    };
     fetchTokensData();
   }, []);
 
   // Handling values change
   const handleName = (e) => {
     setName(e.target.value);
-    setSubmitted(false);
   };
 
   const handleEmail = (e) => {
     setEmail(e.target.value.toLowerCase());
-    setSubmitted(false);
   };
 
   const handlePhone = (e) => {
     setPhone(e.target.value.replace(/\s/g, "", "-"));
-    setSubmitted(false);
   };
 
   const handlePosition = (e) => {
     setPosition_id(e.target.value);
-    setSubmitted(false);
   };
 
   const handlePhoto = (e) => {
     setPhoto(e.target.files[0]);
     setUrl(URL.createObjectURL(e.target.files[0]));
-    setSubmitted(false);
   };
 
   // Handling the form submission
@@ -95,9 +74,8 @@ const SignUp = ({ users, setUsers }) => {
       photo === "" ||
       Url === ""
     ) {
-      setError(true);
+      error(true);
     } else {
-
       const addedUser = { name, email, phone, position_id, photo: Url };
       console.log(addedUser, "added User");
 
@@ -106,38 +84,7 @@ const SignUp = ({ users, setUsers }) => {
         formData.append(name, newUser[name]);
       }
       console.log(formData, "formData");
-      fetch("https://frontend-test-assignment-api.abz.agency/api/v1/users", {
-        method: "POST",
-        headers: {
-          Token: token,
-        },
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data, "data");
-          if (data.success) {
-            const fetchTokensData = async () => {
-              const tokenData = await fetchData(
-                "https://frontend-test-assignment-api.abz.agency/api/v1/token ",
-                { method: "GET" }
-              );
-              setToken(tokenData.token);
-              setUsers((users) => [addedUser, ...users].slice(0, -1));
-            };
-            setSubmitted(true);
-            fetchTokensData();
-
-            console.log("new user added");
-            // process success response
-          } else {
-            setError(data.message);
-            // proccess server errors
-          }
-        })
-        .catch((error) => {
-          // proccess network errors
-        });
+      fetchPostData(formData, addedUser);
     }
   };
 

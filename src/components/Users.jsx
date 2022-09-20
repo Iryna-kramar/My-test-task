@@ -1,35 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import styled from "styled-components";
-import { fetchData } from "../fetchData/fetchData";
 import Button from "./Button";
 import UserCard from "./UserCard";
 import Loader from "./Loader";
+import { UsersContext } from "../context/context";
 
-const Users = ({users, setUsers}) => {
-  const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const count = 6;
-  const totalUsers = data.total_users;
-  const totalPages = Math.ceil(totalUsers / count);
-
-  let baseUrl = `https://frontend-test-assignment-api.abz.agency/api/v1/users?page=${currentPage}&count=${count}`;
-
-  const onNext = () => {
-    setCurrentPage(currentPage + 1);
-    if (currentPage === totalPages) {
-      return (baseUrl = null);
-    }
-  };
+const Users = () => {
+  const { users, currentPage, totalPages, onNext, fetchUsersData } =
+    useContext(UsersContext);
 
   useEffect(() => {
-    const fetchUsersData = async () => {
-      const allData = await fetchData(`${baseUrl}`, {
-        method: "GET",
-      });
-      setData(allData);
-      setUsers(allData.users);
-    };
     fetchUsersData();
   }, [currentPage]);
 

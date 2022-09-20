@@ -6,24 +6,23 @@ const Loader = () => {
 };
 
 const Wrapper = styled.div`
-width: 48px;
-    height: 48px;
-    border: 5px solid var(--color-blue);
-    border-bottom-color: transparent;
-    border-radius: 50%;
-    display: inline-block;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-    
+  width: 48px;
+  height: 48px;
+  border: 5px solid var(--color-blue);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
 
-    @keyframes rotation {
+  @keyframes rotation {
     0% {
-        transform: rotate(0deg);
+      transform: rotate(0deg);
     }
     100% {
-        transform: rotate(360deg);
+      transform: rotate(360deg);
     }
-    } 
+  }
 `;
 
 export default Loader;
