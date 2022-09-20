@@ -13,7 +13,7 @@ import {
   FormLabel,
   UploadButton,
   Stack,
-  Alert
+  Alert,
 } from "./index";
 
 const SignUp = ({ users, setUsers }) => {
@@ -24,6 +24,7 @@ const SignUp = ({ users, setUsers }) => {
   const [positions, setPositions] = useState([]);
   const [position_id, setPosition_id] = useState("");
   const [photo, setPhoto] = useState("");
+  const [Url, setUrl] = useState("");
   const [token, setToken] = useState("");
 
   // States for checking the errors
@@ -77,33 +78,34 @@ const SignUp = ({ users, setUsers }) => {
 
   const handlePhoto = (e) => {
     setPhoto(e.target.files[0]);
+    setUrl(URL.createObjectURL(e.target.files[0]));
     setSubmitted(false);
-    console.log(photo[0], "photo")
   };
 
   // Handling the form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newUser = { name, email, phone, position_id, photo };
+    const newUser = { name, email, phone, position_id, photo, Url };
 
     if (
       name === "" ||
       email === "" ||
       phone === "" ||
       position_id === "" ||
-      photo === ""
+      photo === "" ||
+      Url === ""
     ) {
       setError(true);
     } else {
-      // setSubmitted(true);
-      // setError(false);
-      console.log(newUser, "new user");
-      console.log(users, "users");
+
+      const addedUser = { name, email, phone, position_id, photo: Url };
+      console.log(addedUser, "added User");
 
       const formData = new FormData();
       for (const name in newUser) {
         formData.append(name, newUser[name]);
       }
+      console.log(formData, "formData");
       fetch("https://frontend-test-assignment-api.abz.agency/api/v1/users", {
         method: "POST",
         headers: {
@@ -121,7 +123,7 @@ const SignUp = ({ users, setUsers }) => {
                 { method: "GET" }
               );
               setToken(tokenData.token);
-              setUsers((users) => [newUser, ...users].slice(0, -1));
+              setUsers((users) => [addedUser, ...users].slice(0, -1));
             };
             setSubmitted(true);
             fetchTokensData();
